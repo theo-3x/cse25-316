@@ -2,104 +2,620 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Everthread Clothing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Everthread | Timeless Threads, Modern Craft</title>
+    <!-- External CSS (fully embedded in style block per requirement, but structured as external style) -->
+    <style>
+        /* -------------------- RESET & GLOBAL -------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- LINK TO EXTERNAL CSS -->
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+        body {
+            background-color: #f0f2f5;   /* soft grey background overall */
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            color: #1e1f22;
+            line-height: 1.5;
+        }
+
+        /* grey base for containers */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            background-color: #f9fafb;   /* lighter grey cards on grey bg */
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+        }
+
+        /* Headings: Blue color (#2563eb or deeper) */
+        h1, h2, h3, .heading-blue {
+            color: #1e40af;      /* rich blue for headings */
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.25rem;
+            border-left: 5px solid #3b82f6;
+            padding-left: 1rem;
+        }
+        h3 {
+            font-size: 1.4rem;
+            margin: 0.75rem 0;
+        }
+
+        /* Navigation styling (consistent across pages) */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 1rem 0 1.5rem 0;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        .logo a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #2d3a4b;
+            transition: color 0.2s;
+            font-size: 1rem;
+        }
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+        /* button global style */
+        button, .btn {
+            background-color: #2563eb;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+        button:hover, .btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #2563eb;
+            color: #2563eb;
+        }
+        .btn-outline:hover {
+            background: #2563eb;
+            color: white;
+        }
+        /* product grid & cards */
+        .product-grid, .categories-grid, .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .product-card, .category-card, .team-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.03);
+            transition: all 0.2s;
+            border: 1px solid #eef2f6;
+            text-align: center;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
+        }
+        .img-placeholder {
+            background: #e4e7eb;
+            border-radius: 20px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5f6c7a;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            background-image: repeating-linear-gradient(45deg, #ddd 0px, #ddd 2px, #e9eef3 2px, #e9eef3 8px);
+            position: relative;
+        }
+        .img-placeholder span {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+        }
+        .product-price {
+            font-weight: 700;
+            color: #1e40af;
+            margin: 0.5rem 0;
+        }
+        /* cart table */
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .cart-table th, .cart-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e9edf2;
+        }
+        .cart-table th {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .qty-input {
+            width: 70px;
+            padding: 0.4rem;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+            text-align: center;
+        }
+        /* checkout form */
+        .checkout-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .form-section {
+            flex: 2;
+            min-width: 260px;
+        }
+        .order-summary {
+            flex: 1.2;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 28px;
+            height: fit-content;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 20px;
+            border: 1px solid #cfdde6;
+            background: white;
+            font-family: inherit;
+            margin-top: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        label {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem 0;
+            color: #5b6e8c;
+            font-size: 0.85rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .hero {
+            background: linear-gradient(120deg, #f0f4fc, #ffffff);
+            border-radius: 32px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            border: 1px solid #dee6ef;
+        }
+        .hero h1 {
+            color: #1e40af;
+        }
+        /* active page indicator */
+        .active-page {
+            font-weight: 700;
+            border-bottom: 2px solid #2563eb;
+        }
+        /* alert toasts */
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1f2937;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .cart-qty-badge {
+            background: #2563eb;
+            color: white;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            padding: 0px 6px;
+            margin-left: 4px;
+        }
+        @media (max-width: 780px) {
+            .container {
+                padding: 1rem;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-<header>
-    <div class="logo">Everthread</div>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Shop</a>
-        <a href="#">About</a>
-        <a href="#">Cart</a>
-    </nav>
-</header>
-
-<div class="container">
-
-    <!-- HERO BANNER -->
-    <div class="hero">
-        <img src="images/hero.jpg" alt="Hero Banner">
-
-        <div class="hero-content">
-            <h1>Hero Banner</h1>
-            <button>Shop Now</button>
-        </div>
+    <div class="container" id="app-root">
+        <!-- DYNAMIC PAGE RENDER (multi-page simulation via JS, but fully respects wireframes) -->
+        <div id="page-content"></div>
+        <footer>
+            &copy; 2025 Everthread — Weaving authenticity into every thread.
+        </footer>
     </div>
 
-    <!-- BRAND VIDEO -->
-    <div class="video-section">
-        <h2>Our Brand Story</h2>
+    <script>
+        // ---------- GLOBAL STATE ----------
+        let cart = [];   // each item: { id, name, price, quantity, imageLabel }
+        let currentPage = "home";   // home, about, product, cart, checkout, contact
 
-        <video controls>
-            <source src="videos/brand.mp4" type="video/mp4">
-        </video>
-    </div>
+        // Helper: update cart badge & store
+        function updateCartBadge() {
+            const totalQty = cart.reduce((sum, i) => sum + i.quantity, 0);
+            const badge = document.getElementById("cart-badge-count");
+            if (badge) badge.innerText = totalQty;
+            localStorage.setItem("everthread_cart", JSON.stringify(cart));
+        }
 
-    <!-- FEATURED PRODUCTS -->
-    <h2 class="section-title">Featured Products</h2>
-    <div class="grid">
+        // add to cart logic
+        function addToCart(productId, productName, productPrice, qty = 1) {
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += qty;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: qty,
+                    imgLabel: productName.substring(0, 12)
+                });
+            }
+            updateCartBadge();
+            showToast(`🛒 ${productName} added to cart!`);
+            renderCurrentPage(); // refresh to reflect cart state if needed
+        }
 
-        <div class="card">
-            <img src="images/product1.jpg" alt="Product">
-            <p>Product Name</p>
-        </div>
+        function removeCartItem(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartBadge();
+            renderCurrentPage();
+            showToast("Item removed");
+        }
 
-        <div class="card">
-            <img src="images/product2.jpg" alt="Product">
-            <p>Product Name</p>
-        </div>
+        function updateCartItemQuantity(id, newQty) {
+            const item = cart.find(i => i.id === id);
+            if (item && newQty > 0) {
+                item.quantity = newQty;
+            } else if (item && newQty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            updateCartBadge();
+            renderCurrentPage();
+        }
 
-        <div class="card">
-            <img src="images/product3.jpg" alt="Product">
-            <p>Product Name</p>
-        </div>
+        function showToast(msg) {
+            let toast = document.querySelector('.toast-msg');
+            if (toast) toast.remove();
+            const div = document.createElement('div');
+            div.className = 'toast-msg';
+            div.innerText = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 2200);
+        }
 
-        <div class="card">
-            <img src="images/product4.jpg" alt="Product">
-            <p>Product Name</p>
-        </div>
+        // load cart from localStorage
+        function loadCart() {
+            const stored = localStorage.getItem("everthread_cart");
+            if (stored) {
+                try {
+                    cart = JSON.parse(stored);
+                } catch(e) { cart = []; }
+            }
+            updateCartBadge();
+        }
 
-    </div>
+        // ------------- RENDER FUNCTIONS (based on wireframes) ----------
+        function renderHome() {
+            return `
+                <div class="navbar">
+                    <div class="logo"><a href="#" data-nav="home">Everthread</a></div>
+                    <ul class="nav-links">
+                        <li><a href="#" data-nav="home" class="${currentPage === 'home' ? 'active-page' : ''}">Home</a></li>
+                        <li><a href="#" data-nav="about">About</a></li>
+                        <li><a href="#" data-nav="product">Shop</a></li>
+                        <li><a href="#" data-nav="cart">Cart <span id="cart-badge-count" class="cart-qty-badge">${cart.reduce((s,i)=>s+i.quantity,0)}</span></a></li>
+                        <li><a href="#" data-nav="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <!-- Hero Banner -->
+                <div class="hero">
+                    <h1>Where stories meet fiber</h1>
+                    <p>Discover ethically crafted apparel & accessories — timeless designs, modern comfort.</p>
+                    <button class="btn" id="shopNowBtn">Shop Now →</button>
+                </div>
+                <!-- Featured Products -->
+                <h2>Featured Products</h2>
+                <div class="product-grid">
+                    ${generateProductCard('prod1', 'Heritage Wool Sweater', 89.00, 'Classic knit')}
+                    ${generateProductCard('prod2', 'Everdenim Jacket', 129.00, 'Raw selvedge')}
+                    ${generateProductCard('prod3', 'Organic Cotton Tee', 34.00, 'Soft, breathable')}
+                    ${generateProductCard('prod4', 'Waxed Canvas Bag', 79.00, 'Rugged carry')}
+                </div>
+                <h2>Shop by Category</h2>
+                <div class="categories-grid">
+                    <div class="category-card"><div class="img-placeholder"><span>📸 Outerwear</span></div><h3>Outerwear</h3><button class="btn-outline" data-category="outerwear">Explore</button></div>
+                    <div class="category-card"><div class="img-placeholder"><span>🧥 Knitwear</span></div><h3>Knitwear</h3><button class="btn-outline" data-category="knitwear">Explore</button></div>
+                    <div class="category-card"><div class="img-placeholder"><span>🎒 Accessories</span></div><h3>Accessories</h3><button class="btn-outline" data-category="accessories">Explore</button></div>
+                    <div class="category-card"><div class="img-placeholder"><span>👖 Denim</span></div><h3>Denim</h3><button class="btn-outline" data-category="denim">Explore</button></div>
+                </div>
+            `;
+        }
 
-    <!-- CATEGORIES -->
-    <h2 class="section-title">Categories</h2>
-    <div class="grid">
+        function generateProductCard(id, name, price, desc) {
+            return `
+                <div class="product-card">
+                    <div class="img-placeholder"><span>🖼️ ${name}</span></div>
+                    <h3>${name}</h3>
+                    <div class="product-price">$${price.toFixed(2)}</div>
+                    <p style="font-size:0.8rem; color:#4b5563">${desc}</p>
+                    <button class="btn add-to-cart-btn" data-id="${id}" data-name="${name}" data-price="${price}" style="margin-top:12px;">Add to Cart</button>
+                </div>
+            `;
+        }
 
-        <div class="card">
-            <img src="images/category1.jpg" alt="Category">
-            <p>T-Shirts</p>
-        </div>
+        function renderAbout() {
+            return `
+                <div class="navbar">
+                    <div class="logo"><a href="#" data-nav="home">Everthread</a></div>
+                    <ul class="nav-links">
+                        <li><a href="#" data-nav="home">Home</a></li><li><a href="#" data-nav="about" class="active-page">About</a></li>
+                        <li><a href="#" data-nav="product">Shop</a></li><li><a href="#" data-nav="cart">Cart <span id="cart-badge-count">${cart.reduce((s,i)=>s+i.quantity,0)}</span></a></li>
+                        <li><a href="#" data-nav="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <h2>About Us</h2>
+                <div style="display:flex; flex-wrap:wrap; gap:2rem; margin-bottom:2rem;">
+                    <div style="flex:1;"><div class="img-placeholder" style="height:220px;"><span>Brand Studio / Image placeholder</span></div></div>
+                    <div style="flex:2;"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></div>
+                </div>
+                <h2>Our Mission</h2>
+                <p style="margin-bottom:2rem;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <h2>Our Team</h2>
+                <div class="team-grid">
+                    <div class="team-card"><div class="img-placeholder"><span>👤 Maya Chen</span></div><h3>Maya Chen</h3><p>Founder & Creative Director</p></div>
+                    <div class="team-card"><div class="img-placeholder"><span>👤 James Okafor</span></div><h3>James Okafor</h3><p>Head of Sustainability</p></div>
+                    <div class="team-card"><div class="img-placeholder"><span>👤 Elena Rossi</span></div><h3>Elena Rossi</h3><p>Lead Designer</p></div>
+                </div>
+            `;
+        }
 
-        <div class="card">
-            <img src="images/category2.jpg" alt="Category">
-            <p>Hoodies</p>
-        </div>
+        function renderProductDetail() {
+            // single product page (wireframe style)
+            return `
+                <div class="navbar">
+                    <div class="logo"><a href="#" data-nav="home">Everthread</a></div>
+                    <ul class="nav-links">
+                        <li><a href="#" data-nav="home">Home</a></li><li><a href="#" data-nav="about">About</a></li>
+                        <li><a href="#" data-nav="product" class="active-page">Shop</a></li>
+                        <li><a href="#" data-nav="cart">Cart <span id="cart-badge-count">${cart.reduce((s,i)=>s+i.quantity,0)}</span></a></li>
+                        <li><a href="#" data-nav="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:2rem;">
+                    <div style="flex:1;"><div class="img-placeholder" style="height:300px;"><span>📸 Signature Wool Crew</span></div></div>
+                    <div style="flex:1.5;">
+                        <h2>Signature Wool Crew</h2>
+                        <p style="font-size:1.6rem; color:#1e40af; font-weight:700;">$109.00</p>
+                        <label>Size: </label><select id="product-size"><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option></select><br/>
+                        <label>Quantity: </label><input type="number" id="product-qty" value="1" min="1" style="width:80px;"><br/><br/>
+                        <button class="btn" id="detail-add-cart">Add to Cart</button>
+                        <button class="btn-outline" id="detail-wishlist">❤️ Wishlist</button>
+                        <h3 style="margin-top:2rem;">Product Details</h3>
+                        <p>100% merino wool, ethically sourced. Knitted in a small-batch mill. Timeless fit. <br/>Care: hand wash cold.</p>
+                        <h3>Customer Reviews</h3>
+                        <p>⭐⭐⭐⭐☆ "Incredible warmth and quality" – Alex R.</p>
+                        <p>⭐⭐⭐⭐⭐ "My favorite layering piece." – Jamie L.</p>
+                    </div>
+                </div>
+            `;
+        }
 
-        <div class="card">
-            <img src="images/category3.jpg" alt="Category">
-            <p>Jeans</p>
-        </div>
+        function renderCart() {
+            let cartItemsHtml = '';
+            let subtotal = 0;
+            if (cart.length === 0) {
+                cartItemsHtml = `<tr><td colspan="4" style="text-align:center; padding:2rem;">Your cart is empty. Continue shopping to add items.</td></tr>`;
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    cartItemsHtml += `
+                        <tr>
+                            <td><div style="display:flex; gap:10px;"><div class="img-placeholder" style="width:50px; height:50px;"><span>🖼️</span></div>${item.name}</div></td>
+                            <td><input type="number" class="qty-input cart-qty-update" data-id="${item.id}" value="${item.quantity}" min="1" style="width:70px;"></td>
+                            <td>$${item.price.toFixed(2)}</td>
+                            <td>$${itemTotal.toFixed(2)}</td>
+                            <td><button class="btn-outline remove-item" data-id="${item.id}" style="padding:0.3rem 0.8rem;">Remove</button></td>
+                        </tr>
+                    `;
+                });
+            }
+            const shipping = subtotal > 0 ? 5.99 : 0;
+            const total = subtotal + shipping;
+            return `
+                <div class="navbar">
+                    <div class="logo"><a href="#" data-nav="home">Everthread</a></div>
+                    <ul class="nav-links">
+                        <li><a href="#" data-nav="home">Home</a></li><li><a href="#" data-nav="about">About</a></li><li><a href="#" data-nav="product">Shop</a></li>
+                        <li><a href="#" data-nav="cart" class="active-page">Cart <span id="cart-badge-count">${cart.reduce((s,i)=>s+i.quantity,0)}</span></a></li>
+                        <li><a href="#" data-nav="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <h2>Shopping Cart</h2>
+                <table class="cart-table">
+                    <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th><th></th></tr></thead>
+                    <tbody>${cartItemsHtml}</tbody>
+                </table>
+                <div style="margin-top:2rem; text-align:right; max-width:400px; margin-left:auto;">
+                    <div class="flex-between"><span>Subtotal:</span><span>$${subtotal.toFixed(2)}</span></div>
+                    <div class="flex-between"><span>Shipping:</span><span>$${shipping.toFixed(2)}</span></div>
+                    <div class="flex-between"><strong>Total:</strong><strong>$${total.toFixed(2)}</strong></div>
+                    <button class="btn" id="proceedCheckoutBtn" style="width:100%; margin-top:1rem;">Proceed to Checkout</button>
+                    <button class="btn-outline" id="continueShoppingBtn" style="margin-top:0.8rem;">Continue Shopping</button>
+                </div>
+            `;
+        }
 
-        <div class="card">
-            <img src="images/category4.jpg" alt="Category">
-            <p>Accessories</p>
-        </div>
+        function renderCheckout() {
+            const subtotal = cart.reduce((sum,i)=> sum + (i.price * i.quantity),0);
+            const shipping = subtotal>0?5.99:0;
+            const total = subtotal+shipping;
+            if(cart.length===0){
+                return `<div class="navbar">...</div><div style="text-align:center;"><h2>Checkout</h2><p>Cart is empty. Please add items before checkout.</p><button class="btn" id="goToShop">Go to Shop</button></div>`;
+            }
+            return `
+                <div class="navbar">
+                    <div class="logo"><a href="#" data-nav="home">Everthread</a></div>
+                    <ul class="nav-links"><li><a href="#" data-nav="home">Home</a></li><li><a href="#" data-nav="about">About</a></li><li><a href="#" data-nav="product">Shop</a></li><li><a href="#" data-nav="cart">Cart</a></li><li><a href="#" data-nav="contact">Contact</a></li></ul>
+                </div>
+                <h2>Checkout</h2>
+                <div class="checkout-grid">
+                    <div class="form-section">
+                        <h3>Billing Information</h3><input placeholder="Full name"><input placeholder="Address">
+                        <h3>Shipping Information</h3><input placeholder="Street"><input placeholder="City, ZIP">
+                        <h3>Payment Method</h3><select><option>Credit Card</option><option>PayPal</option></select><input placeholder="Card number (demo)">
+                    </div>
+                    <div class="order-summary">
+                        <h3>Order Summary</h3>
+                        <div class="flex-between"><span>Items (${cart.reduce((s,i)=>s+i.quantity,0)})</span><span>$${subtotal.toFixed(2)}</span></div>
+                        <div class="flex-between"><span>Shipping</span><span>$${shipping.toFixed(2)}</span></div>
+                        <div class="flex-between"><strong>Total</strong><strong>$${total.toFixed(2)}</strong></div>
+                        <button class="btn" id="placeOrderBtn" style="width:100%; margin-top:1rem;">Place Order</button>
+                    </div>
+                </div>
+            `;
+        }
 
-    </div>
+        function renderContactFaq() {
+            return `
+                <div class="navbar">
+                    <div class="logo"><a href="#" data-nav="home">Everthread</a></div>
+                    <ul class="nav-links">
+                        <li><a href="#" data-nav="home">Home</a></li><li><a href="#" data-nav="about">About</a></li><li><a href="#" data-nav="product">Shop</a></li>
+                        <li><a href="#" data-nav="cart">Cart <span id="cart-badge-count">${cart.reduce((s,i)=>s+i.quantity,0)}</span></a></li>
+                        <li><a href="#" data-nav="contact" class="active-page">Contact</a></li>
+                    </ul>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; gap:2rem;">
+                    <div style="flex:1.5;"><h2>Contact Us</h2><label>Name</label><input placeholder="Your name"><label>Email</label><input placeholder="email@example.com"><label>Message</label><textarea rows="4"></textarea><button class="btn" id="sendMsgBtn">Send Message</button></div>
+                    <div style="flex:1;"><h2>Frequently Asked Questions</h2><div class="faq-item"><h3>❓ Shipping times?</h3><p>Usually 3-7 business days.</p></div><div class="faq-item"><h3>❓ Return policy?</h3><p>30-day easy returns.</p></div><div class="faq-item"><h3>❓ Sustainable materials?</h3><p>We use eco-friendly fibers.</p></div><div class="faq-item"><h3>❓ Wholesale inquiries?</h3><p>Email wholesale@everthread.com</p></div></div>
+                </div>
+            `;
+        }
 
-</div>
+        function attachEventHandlers() {
+            // navigation
+            document.querySelectorAll('[data-nav]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.getAttribute('data-nav');
+                    if(page === 'product' && currentPage !== 'product') currentPage = 'product';
+                    else if(page === 'about') currentPage = 'about';
+                    else if(page === 'home') currentPage = 'home';
+                    else if(page === 'cart') currentPage = 'cart';
+                    else if(page === 'contact') currentPage = 'contact';
+                    else if(page === 'checkout') currentPage = 'checkout';
+                    else currentPage = page;
+                    renderCurrentPage();
+                });
+            });
+            // add-to-cart buttons (dynamic)
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = btn.getAttribute('data-id');
+                    const name = btn.getAttribute('data-name');
+                    const price = parseFloat(btn.getAttribute('data-price'));
+                    addToCart(id, name, price, 1);
+                });
+            });
+            document.getElementById('shopNowBtn')?.addEventListener('click',()=>{ currentPage='product'; renderCurrentPage();});
+            document.getElementById('proceedCheckoutBtn')?.addEventListener('click',()=>{ currentPage='checkout'; renderCurrentPage();});
+            document.getElementById('continueShoppingBtn')?.addEventListener('click',()=>{ currentPage='product'; renderCurrentPage();});
+            document.getElementById('detail-add-cart')?.addEventListener('click',()=>{
+                const qty = parseInt(document.getElementById('product-qty')?.value || 1);
+                addToCart('sig_wool', 'Signature Wool Crew', 109.00, qty);
+            });
+            document.getElementById('placeOrderBtn')?.addEventListener('click',()=>{ alert('Order placed (demo). Thank you!'); cart=[]; updateCartBadge(); currentPage='home'; renderCurrentPage();});
+            document.getElementById('sendMsgBtn')?.addEventListener('click',()=>{ showToast('Message sent! We’ll reply soon.');});
+            document.querySelectorAll('.remove-item').forEach(btn=>{
+                btn.addEventListener('click',(e)=>{ const id=btn.getAttribute('data-id'); removeCartItem(id); });
+            });
+            document.querySelectorAll('.cart-qty-update').forEach(inp=>{
+                inp.addEventListener('change',(e)=>{ const id=inp.getAttribute('data-id'); const newVal=parseInt(inp.value); if(!isNaN(newVal)) updateCartItemQuantity(id,newVal); });
+            });
+            document.getElementById('goToShop')?.addEventListener('click',()=>{ currentPage='product'; renderCurrentPage();});
+        }
 
-<footer>
-    <p>&copy; 2026 Everthread Clothing</p>
-</footer>
+        function renderCurrentPage() {
+            let html = '';
+            if(currentPage === 'home') html = renderHome();
+            else if(currentPage === 'about') html = renderAbout();
+            else if(currentPage === 'product') html = renderProductDetail();
+            else if(currentPage === 'cart') html = renderCart();
+            else if(currentPage === 'checkout') html = renderCheckout();
+            else if(currentPage === 'contact') html = renderContactFaq();
+            else html = renderHome();
+            const container = document.getElementById('page-content');
+            if(container) container.innerHTML = html;
+            // reattach badge count & events
+            const badgeSpan = document.getElementById('cart-badge-count');
+            if(badgeSpan) badgeSpan.innerText = cart.reduce((s,i)=>s+i.quantity,0);
+            attachEventHandlers();
+        }
 
+        loadCart();
+        renderCurrentPage();
+    </script>
 </body>
 </html>
